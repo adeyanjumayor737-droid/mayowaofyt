@@ -104,7 +104,7 @@ export const Stat: React.FC<{value: number; raw?: boolean; decimals?: number; pr
 	const p = interpolate(f, [6, 46], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease});
 	const a = useIn(0, 12);
 	const b = useIn(40, 14);
-	const v = raw ? String(Math.round(value * p)) : (value * p).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
+	const v = raw ? String(value) : (value * p).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
 	return (
 		<DarkBg>
 			{header && <SectionHeader text={header} />}
@@ -161,7 +161,7 @@ const ROUTE: [number, number][] = [
 export const RouteMap: React.FC<{header?: string; from?: number; to?: number; distance?: boolean; tag?: string; highlightOcean?: boolean}> = ({header, from = 0, to = 1, distance, tag, highlightOcean}) => {
 	const f = useCurrentFrame();
 	const {durationInFrames} = useVideoConfig();
-	const proj = useMemo(() => geoMercator().center([-35, 47]).scale(1350).translate([960, 560]), []);
+	const proj = useMemo(() => geoMercator().center([-36, 47]).scale(1000).translate([960, 600]), []);
 	const path = useMemo(() => geoPath(proj), [proj]);
 	const landD = useMemo(() => path(feature(land as any, (land as any).objects.land) as any) ?? '', [path]);
 	const pts = useMemo(() => {
@@ -324,7 +324,7 @@ export const Clock: React.FC<{hours: number; label: string; header?: string}> = 
 	const f = useCurrentFrame();
 	const p = interpolate(f, [8, 60], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease});
 	const h = hours * p;
-	const r = 210;
+	const r = 300;
 	const c = 2 * Math.PI * r;
 	return (
 		<DarkBg>
@@ -334,12 +334,12 @@ export const Clock: React.FC<{hours: number; label: string; header?: string}> = 
 				<circle cx={960} cy={540} r={r} fill="none" stroke={YELLOW} strokeWidth={22} strokeDasharray={c} strokeDashoffset={c * (1 - Math.min(1, h / 36))}
 					transform="rotate(-90 960 540)" strokeLinecap="round" />
 			</svg>
-			<div style={{position: 'absolute', top: 440, width: '100%', textAlign: 'center'}}>
-				<div style={{fontFamily: FONT, fontWeight: 800, fontSize: 120, color: WHITE, lineHeight: 1}}>
+			<div style={{position: 'absolute', top: 470, width: '100%', textAlign: 'center'}}>
+				<div style={{fontFamily: FONT, fontWeight: 800, fontSize: 110, color: WHITE, lineHeight: 1}}>
 					{Math.floor(h)}<span style={{fontSize: 60, color: YELLOW}}>H</span> {String(Math.round((h % 1) * 60)).padStart(2, '0')}<span style={{fontSize: 60, color: YELLOW}}>M</span>
 				</div>
 			</div>
-			<div style={{position: 'absolute', bottom: 120, width: '100%', textAlign: 'center', ...T, fontWeight: 700, fontSize: 46}}>{label}</div>
+			<div style={{position: 'absolute', bottom: 60, width: '100%', textAlign: 'center', ...T, fontWeight: 700, fontSize: 46}}>{label}</div>
 		</DarkBg>
 	);
 };
